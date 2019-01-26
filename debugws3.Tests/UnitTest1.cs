@@ -12,6 +12,20 @@ namespace Tests
       var result = Calc.Calculate(null);
       Assert.IsFalse(result.err.Length == 0, "should not be empty");
     }
+    [DataTestMethod]
+    [DataRow("1+3*3")]
+    [DataRow("4 + 3*2")]
+    [DataRow("4*2 +2")]
+    [DataRow("3/3 + 9")]
+    [DataRow("10/2 + 5")]
+    [DataRow("10*5 / 5")]
+
+    public void DoStuff(string value)
+    {
+      var result = Calc.Calculate(value);
+      Assert.IsTrue(result.result == 10, $"{value} should be 10");
+    }
+
 
     [DataTestMethod]
     [DataRow("")]

@@ -19,6 +19,44 @@ namespace debugws3
 
   public class Calc
   {
+      public static int[] RemoveIndices(int[] IndicesArray, int RemoveAt)
+      {
+    int[] newIndicesArray = new int[IndicesArray.Length - 1];
+
+    int i = 0;
+    int j = 0;
+    while (i < IndicesArray.Length)
+    {
+        if (i != RemoveAt)
+        {
+            newIndicesArray[j] = IndicesArray[i];
+            j++;
+        }
+
+        i++;
+    }
+
+    return newIndicesArray;
+}
+     public static char[] RemoveIndicesChar(char[] IndicesArray, int RemoveAt)
+      {
+    char[] newIndicesArray = new char[IndicesArray.Length - 1];
+
+    int i = 0;
+    int j = 0;
+    while (i < IndicesArray.Length)
+    {
+        if (i != RemoveAt)
+        {
+            newIndicesArray[j] = IndicesArray[i];
+            j++;
+        }
+
+        i++;
+    }
+
+    return newIndicesArray;
+}
     private static void WelcomeMessage()
     {
       Console.WriteLine(
@@ -85,23 +123,42 @@ namespace debugws3
         return new Result(0, "Wrong entry. Try again using one or more operations");
       }
 
+      if(operations.Contains('*'))
+      {
+        for(var i = 0; i < operations.Length; i++)
+        {
+          if(operations[i] == '*')
+          {
+            numbersToBeCalculated[i] = numbersToBeCalculated[i] * numbersToBeCalculated[i+1];
+            numbersToBeCalculated = RemoveIndices(numbersToBeCalculated,i+1);
+            operations = RemoveIndicesChar(operations,i);
+          }
+        }
+      }
+      
+      if(operations.Contains('/'))
+      {
+        for(var i = 0; i < operations.Length; i++)
+        {
+          if(operations[i] == '/')
+          {
+            numbersToBeCalculated[i] = numbersToBeCalculated[i] / numbersToBeCalculated[i+1];
+            numbersToBeCalculated = RemoveIndices(numbersToBeCalculated,i+1);
+            operations = RemoveIndicesChar(operations,i);
+          }
+        }
+      }
+
       double result = numbersToBeCalculated[0];
+
 
       var j = 0;
       for (var i = 1; i < numbersToBeCalculated.Length; i++)
       {
+
+
         switch (operations[j])
         {
-          case '+':
-            {
-              result += numbersToBeCalculated[i];
-              break;
-            }
-          case '-':
-            {
-              result -= numbersToBeCalculated[i];
-              break;
-            }
           case '*':
             {
               result *= numbersToBeCalculated[i];
@@ -112,6 +169,16 @@ namespace debugws3
               result /= numbersToBeCalculated[i];
               break;
             }
+          case '+':
+            {
+              result += numbersToBeCalculated[i];
+              break;
+            }
+          case '-':
+            {
+              result -= numbersToBeCalculated[i];
+              break;
+            }
           default:
             break;
         }
@@ -120,6 +187,7 @@ namespace debugws3
 
       return new Result(result, "");
     }
+ 
 
     public static void ExitAndThankYouMessage()
     {
